@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Connexion - REIS KYC</title>
+  <style>
+    :root {
+      --bg-1: #2f4a63;
+      --bg-2: #3f5d78;
+      --bg-3: #24364b;
+      --card-bg: rgba(255, 255, 255, 0.96);
+      --text-primary: #1f2a37;
+      --text-secondary: #5b6777;
+      --input-border: #cfd8e3;
+      --input-focus: #2b6cb0;
+      --danger: #c53030;
+      --button: #f28c00;
+      --button-hover: #db7e00;
+      --shadow: 0 18px 45px rgba(0, 0, 0, 0.18);
+      --radius: 18px;
+      --radius-sm: 12px;
+      --transition: 0.25s ease;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.06) 0, rgba(255,255,255,0) 30%),
+        radial-gradient(circle at 80% 30%, rgba(255,255,255,0.05) 0, rgba(255,255,255,0) 28%),
+        linear-gradient(180deg, var(--bg-2) 0%, var(--bg-1) 45%, var(--bg-3) 100%);
+      overflow: hidden;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      inset: auto;
+      width: 140%;
+      left: -20%;
+      border-radius: 45% 55% 0 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    body::before {
+      bottom: 22%;
+      height: 280px;
+      background: rgba(255, 255, 255, 0.04);
+      transform: rotate(-3deg);
+    }
+
+    body::after {
+      bottom: 0;
+      height: 320px;
+      background: rgba(0, 0, 0, 0.08);
+      transform: rotate(-2deg);
+    }
+
+    .login-wrapper {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 460px;
+    }
+
+    .login-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 32px 32px 24px;
+      backdrop-filter: blur(4px);
+    }
+
+    .brand {
+      text-align: center;
+      margin-bottom: 26px;
+    }
+
+    .brand-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .brand-mark {
+      width: 18px;
+      height: 18px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .brand-mark::before,
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 3px;
+      transform: rotate(45deg);
+    }
+
+    .brand-mark::before {
+      background: linear-gradient(135deg, #72d000, #d72670);
+      clip-path: polygon(0 40%, 40% 40%, 40% 0, 60% 0, 60% 40%, 100% 40%, 100% 60%, 60% 60%, 60% 100%, 40% 100%, 40% 60%, 0 60%);
+    }
+
+    .brand-title {
+      font-size: 30px;
+      font-weight: 700;
+      letter-spacing: -0.4px;
+      margin: 0;
+      line-height: 1.1;
+    }
+
+    .brand-subtitle {
+      margin: 8px 0 0;
+      color: var(--text-secondary);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .security-note {
+      margin-top: 8px;
+      font-size: 13px;
+      color: #3d556f;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+    }
+
+    .input-wrapper {
+      position: relative;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      min-height: 52px;
+      border: 1px solid var(--input-border);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      font-size: 15px;
+      color: var(--text-primary);
+      outline: none;
+      transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+      background: #fff;
+    }
+
+    input::placeholder {
+      color: #94a3b8;
+    }
+
+    input:focus {
+      border-color: var(--input-focus);
+      box-shadow: 0 0 0 4px rgba(43, 108, 176, 0.14);
+    }
+
+    .password-input {
+      padding-right: 52px !important;
+    }
+
+    .toggle-password {
+      position: absolute;
+      top: 50%;
+      right: 12px;
+      transform: translateY(-50%);
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-size: 18px;
+      line-height: 1;
+      color: #617085;
+      padding: 6px;
+      border-radius: 8px;
+    }
+
+    .toggle-password:focus {
+      outline: 2px solid var(--input-focus);
+      outline-offset: 2px;
+    }
+
+    .form-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin: 4px 0 20px;
+      flex-wrap: wrap;
+    }
+
+    .checkbox {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .checkbox input {
+      width: 16px;
+      height: 16px;
+    }
+
+    .link {
+      color: var(--input-focus);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .link:hover {
+      text-decoration: underline;
+    }
+
+    .login-button {
+      width: 100%;
+      min-height: 54px;
+      border: none;
+      border-radius: 999px;
+      background: var(--button);
+      color: white;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+      box-shadow: 0 10px 24px rgba(242, 140, 0, 0.28);
+    }
+
+    .login-button:hover {
+      background: var(--button-hover);
+      transform: translateY(-1px);
+    }
+
+    .login-button:active {
+      transform: translateY(0);
+    }
+
+    .login-button:focus {
+      outline: 3px solid rgba(43, 108, 176, 0.28);
+      outline-offset: 3px;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--text-secondary);
+      font-size: 13px;
+      margin: 22px 0 16px;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: #d9e1ea;
+    }
+
+    .support {
+      text-align: center;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .error-message {
+      display: none;
+      margin-top: 8px;
+      font-size: 13px;
+      color: var(--danger);
+    }
+
+    .footer {
+      margin-top: 16px;
+      text-align: center;
+      color: rgba(255, 255, 255, 0.92);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .footer .meta {
+      opacity: 0.9;
+    }
+
+    .footer .secure {
+      font-weight: 700;
+    }
+
+    @media (max-width: 520px) {
+      .login-card {
+        padding: 24px 20px 20px;
+      }
+
+      .brand-title {
+        font-size: 26px;
+      }
+
+      .form-row {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="login-wrapper">
+    <section class="login-card" aria-labelledby="login-title">
+      <header class="brand">
+        <div class="brand-logo" aria-hidden="true">
+          <span class="brand-mark"></span>
+          <h1 class="brand-title" id="login-title">Vneuron</h1>
+        </div>
+        <p class="brand-subtitle">
+          Accès sécurisé à votre plateforme de conformité KYC
+        </p>
+        <p class="security-note">
+          🔒 Ne partagez jamais vos identifiants de connexion.
+        </p>
+      </header>
+
+      <form action="#" method="post" novalidate>
+        <div class="form-group">
+          <label for="username">Email ou nom d’utilisateur</label>
+          <div class="input-wrapper">
+            <input
+              type="text"
+              id="username"
+              name="username"
+              placeholder="exemple@entreprise.com"
+              autocomplete="username"
+              required
+            />
+          </div>
+          <div class="error-message">Veuillez renseigner votre identifiant.</div>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Mot de passe</label>
+          <div class="input-wrapper">
+            <input
+              type="password"
+              id="password"
+              name="password"
+              class="password-input"
+              placeholder="Entrez votre mot de passe"
+              autocomplete="current-password"
+              required
+            />
+            <button
+              type="button"
+              class="toggle-password"
+              aria-label="Afficher le mot de passe"
+              onclick="togglePassword()"
+            >
+              👁
+            </button>
+          </div>
+          <div class="error-message">Veuillez renseigner votre mot de passe.</div>
+        </div>
+
+        <div class="form-row">
+          <label class="checkbox">
+            <input type="checkbox" name="remember" />
+            <span>Se souvenir de moi</span>
+          </label>
+
+          <a href="#" class="link">Mot de passe oublié ?</a>
+        </div>
+
+        <button type="submit" class="login-button">Se connecter</button>
+
+        <div class="divider">Assistance</div>
+
+        <div class="support">
+          Besoin d’aide ?
+          <a href="mailto:support@vneuron.com" class="link">Contacter le support</a>
+        </div>
+      </form>
+    </section>
+
+    <footer class="footer">
+      <div class="secure">Connexion sécurisée • Données protégées</div>
+      <div class="meta">© Vneuron — REIS KYC Platform</div>
+    </footer>
+  </main>
+
+  <script>
+    function togglePassword() {
+      const passwordInput = document.getElementById("password");
+      const toggleButton = document.querySelector(".toggle-password");
+
+      if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        toggleButton.setAttribute("aria-label", "Masquer le mot de passe");
+      } else {
+        passwordInput.type = "password";
+        toggleButton.setAttribute("aria-label", "Afficher le mot de passe");
+      }
+    }
+  </script>
+</body>
+</html>
